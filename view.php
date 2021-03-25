@@ -1,11 +1,13 @@
-
+<!-- PHP for view page-->
 <?php
 
     require 'connection.php'; // For connetion
-    $result = mysqli_query($conn,"SELECT * FROM student_info"); /// Retriveing all data from database to show
+    session_start();
+    if($_SESSION['User'] or isset($_GET['view']) )
+    {
+        $result = mysqli_query($conn,"SELECT * FROM student_info"); /// Retriveing all data from database to show
 
 ?>
-
 
 
 <!-- View page HTML -->
@@ -26,11 +28,13 @@
         <!-- Latest compiled JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
-    <body>
+    <body class="bg-light">
         <div class="container bg-light " >
             <br>
-            <a href="index.php">index</a> 
-            <h1 class = "text-dark bg-info text-center">All Registered Profile</h1>
+
+                <a class='btn-sm btn-secondary' role='button' href='registration.php'>Registration</a>    
+                <h1 class = "text-dark bg-info text-center">All Registered Profile</h1>
+            
             <div class="table-responsive text-center">
                 <table class="table table-hover table-striped table-bordered">
                     <thead class = "">
@@ -53,7 +57,7 @@
                                         <td><?php echo $row["email"]; ?></td>
                                         <!--<td><a href="profile1.php?id=<?php echo $row['id']?>" ><button  class ="view" >View Details</button></a></td>-->
                                         <td><a href="profile.php?id=<?php echo $row['id']?>" ><img src="<?php echo $row['photo']; ?>"  width="100px" height="60px"  ></a></td>
-
+                                        <?php $_SESSION['id'] = $row['id']; ?>
                                         <!--<td class ="view" ><a href="profile.php?id " >Profile</a></td>  -->
 
                                     </tr>
@@ -67,9 +71,16 @@
                         <?php
                             }
                             else{echo "No result found";}
+                            echo "<a class='btn btn-info' role='button' href='logout.php?logout'>Logout</a>";
+                        }
+                        else
+                        {
+                            header("location:index.php");
+                        }   
                         ?>
             </div>
 
         </div>
+        
     </body>
 </html>

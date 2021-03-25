@@ -1,13 +1,16 @@
 <?php 
-require "connection.php";
+    require "connection.php";
+    session_start();
+    if($_SESSION['id'] )
+    {
 
-if(isset($_GET['id']))
-{
-    $id = $_GET['id'];
-    $q = "select * from student_info where id ='$id'";
-    $result = mysqli_query($conn , $q);
+        if(isset($_GET['id'])) 
+        {
+            $id = $_GET['id'];
+            $q = "select * from student_info where id ='$id'"; ///Qurey for Finding specific profile
+            $result = mysqli_query($conn , $q);
 
-}
+        }
 ?>
 
 <html>
@@ -25,12 +28,12 @@ if(isset($_GET['id']))
         <!-- Latest compiled JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </head>
-    <body>
+    <body class="bg-light">
     <div class="container bg-light">
          <br>
-         <a href="index.php">index</a> /
-        <a href="view.php">view</a>
-        <small class = "col-sm-12  text-left">Profile</small>
+         <a class='btn-sm btn-secondary' role='button' href='registration.php'>Registration</a>
+        <a class='btn-sm btn-secondary' role='button' href="view.php">View</a>
+        <small class = " btn-sm btn-secondary col-sm-12  text-left">Profile</small>
         <h1 class = "text-dark bg-info text-center ">Personal Profile</h1>
         
 
@@ -38,9 +41,7 @@ if(isset($_GET['id']))
             if(mysqli_num_rows($result)>0)
             {
                 while($row = mysqli_fetch_array($result))
-                {
-                    
-                
+                {        
             
         ?>
                     <div class="row ">
@@ -104,12 +105,24 @@ if(isset($_GET['id']))
                         
                         </div>
 
-                    </div>
-                    
-        <?php 
+
+         <?php 
+
                 }
             }
+            echo "<a class='btn btn-info' role='button' href='logout.php?logout'>Logout</a>";
+        }
+        else
+        {
+            header("location:view.php");
+        }
+
+
         ?>
+
+                    </div>
+                    
+       
 
         
     </div>
